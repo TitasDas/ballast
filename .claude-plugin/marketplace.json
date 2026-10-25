@@ -1,0 +1,6 @@
+{
+  "name": "ballast",
+  "description": "Ballast, a Claude Code plugin that trims long command output and shows what your session is carrying",
+  "owner": { "name": "Titas Das" },
+  "plugins": [{ "name": "ballast", "source": "./" }]
+}

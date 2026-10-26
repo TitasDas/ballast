@@ -46,4 +46,8 @@ In Claude Code, in a terminal, type:
 
 Type `y` when asked, then choose the user option. Ballast then works in every Claude Code session on your computer, VS Code included.
 
-Ballast is free to use. See [LICENSE](LICENSE).
+## Other coding agents
+
+There's a paid version of Ballast for Codex, Gemini CLI and OpenCode. It shortens long command output and asks for shorter answers, just like it does here. For Cursor, Aider and other agents it comes as a set of rules plus a small command that does the shortening.
+
+Ballast for Claude Code is free to use. See [LICENSE](LICENSE).

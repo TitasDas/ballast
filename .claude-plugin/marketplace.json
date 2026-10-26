@@ -1,6 +1,13 @@
 {
   "name": "ballast",
-  "description": "Ballast, a Claude Code plugin that trims long command output and shows what your session is carrying",
-  "owner": { "name": "Titas Das" },
-  "plugins": [{ "name": "ballast", "source": "./" }]
+  "description": "Ballast, a Claude Code plugin that cuts long tool results to a budget that shrinks as the context fills and shows what your session is carrying",
+  "owner": {
+    "name": "Titas Das"
+  },
+  "plugins": [
+    {
+      "name": "ballast",
+      "source": "./"
+    }
+  ]
 }

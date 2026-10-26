@@ -12,6 +12,10 @@ declare module 'claude-code' {
       trims: Shaped<Trim[]>
       requests: number
       contextTokens: number
+      window: number
+      scale: number
+      pending: number
+      lastOutput: number
     }
   }
 }

@@ -1,11 +1,18 @@
 {
   "name": "ballast",
-  "version": "0.1.0",
-  "description": "Trims long command output and shows what your Claude Code session is carrying",
-  "author": { "name": "Titas Das" },
+  "version": "0.2.0",
+  "description": "Cuts long tool results to a budget that shrinks as the context fills, asks for short answers, and shows what your Claude Code session is carrying",
+  "author": {
+    "name": "Titas Das"
+  },
   "license": "LicenseRef-Proprietary",
   "repository": "https://github.com/TitasDas/ballast",
-  "keywords": ["context", "tokens", "usage", "compact"],
+  "keywords": [
+    "context",
+    "tokens",
+    "usage",
+    "compact"
+  ],
   "icon": "./.claude-plugin/icon.png",
   "types": "./types/index.d.ts"
 }

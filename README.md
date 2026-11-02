@@ -2,68 +2,71 @@
 
 # Ballast
 
-Spend less of your Claude Code usage on things Claude has already read.
+**Stop paying for the same test log on every reply.**
+
+Ballast is a free plugin for Claude Code. Replayed over 14 days of my real sessions, it removes 129 million tokens, worth about $36 at Opus 5.5 API prices.
+
+```
+/plugin marketplace add TitasDas/ballast
+/plugin install ballast@ballast
+```
 
 ![Ballast demo](docs/demo.gif)
 
-## What it does
+## Why
 
-Long results, whether from a command, a file read, a web page or an MCP tool, get cut down to the parts that matter before Claude reads them. A failing test stays in, with its line number. The rest is saved to a file Claude can read back if it turns out to be needed. The fuller your conversation gets, the tighter the cut.
+Claude rereads the whole conversation before every reply. A file you opened once keeps costing you until the conversation is cleared. In my sessions a large result typically gets re-sent 45 times. The worst was 277.
 
-Claude's replies get shorter and more direct.
+![One 27,039-token file re-sent 277 times costs 7.49M tokens without Ballast and 0.62M with it](docs/why.png)
 
-A small bar above where you type shows how much of the window your conversation is using, what the heaviest thing in it is, how much Ballast has saved you so far, and when it's time to tidy up.
+## How
 
-## Why it helps
+Ballast cuts long results before Claude reads them. Failures stay in, with their file and line. The rest goes to a file in `.trimmed/` that Claude can read back if it needs to. The fuller the conversation gets, the tighter the cut, and Claude's replies get shorter too.
 
-Claude rereads the whole conversation every time it replies. A long test log you ran once keeps costing you on every reply after it, and uses up your limits faster. In my own sessions a big result gets reread about 44 times before the conversation is cleared, and Claude also gets worse at finding things as the conversation fills up.
-
-## What it looks like
-
-A test run that printed 400 lines. Claude got the failure with its file and line, and the bar shows what the cut has already saved:
+A test run that printed 400 lines. Claude got the failure, and the bar shows what the cut has saved:
 
 ![The bar after a long test run](docs/band.png)
 
-A follow-up. Claude opens just the function it needs and answers in two lines, and the saving grows with every reply:
+The next question. The saving doubles without you doing anything:
 
 ![A follow-up answered from the cut output](docs/answer.png)
 
-## How much it saves
+## What it saves
 
-Over eight days of my own work, oversized results cost 135 million tokens across all the replies that followed them. With Ballast it would have been 40 million, about 70% less. The worst offenders were whole files Claude read once and then carried for hundreds of replies.
+![202.9M tokens without Ballast, 73.5M with it](docs/saves.png)
 
-The bar's numbers are real counts, not a guess from the character count. In my sessions the usual rule of thumb, one token per four characters, was off by nearly half against what Claude actually billed; Ballast's count stays within a few percent and keeps correcting itself as the session goes.
+| If you paid API prices for | 14 days | 30 days at this pace |
+|---|---|---|
+| Sonnet 5.5 | $18 | $38 |
+| Opus 5.5 | $36 | $76 |
+| Fable 5.1 | $57 | $121 |
 
-## How to use it
+These are my own 7,563 Claude requests, replayed through Ballast's cut and priced as if every one used that model. Re-sent tokens are billed at the cheap cached rate, so the dollars look small next to the token count: about 6% of the bill. The figures leave out shorter replies, and they leave out any saved file Claude reads back.
 
-Install it and work as usual. The bar above the prompt has these buttons:
+The bar shows your own numbers as you work.
+
+## Controls
 
 | Button | What it does |
 |---|---|
-| Trim outputs | Turns the cut on or off. Turn it off when you want every line. |
+| Trim outputs | Turns the cut on or off. |
 | Short answers | Turns shorter replies on or off. |
 | Full last | Shows the full version of the last cut output. |
-| Weigh | Tells you whether your conversation is fine or needs a tidy up. |
-| Compact | Shrinks the conversation but keeps what matters. |
-| Clear | Starts fresh. Best when you move on to something unrelated. |
+| Weigh | Tells you whether the conversation needs a tidy up. |
+| Compact | Shrinks the conversation and keeps what matters. |
+| Clear | Starts fresh. |
 | Hide | Folds the bar away. |
 
-`/trim off` and `/lean off` do the same as the first two buttons from the keyboard.
+`/trim off` and `/lean off` do the same as the first two buttons.
 
-## Install
+## Your data, and why paid versions need an account
 
-In Claude Code, in a terminal, type:
+![I planned an offline tool, paid features made an account the safer path, and your work stays on your computer](docs/accounts.gif)
 
-```
-/plugin install ballast --marketplace TitasDas/ballast
-```
+The Claude Code plugin is free and needs no account. It makes no network calls of its own.
 
-Type `y` when asked, then choose the user option. Ballast then works in every Claude Code session on your computer, VS Code included.
+I first planned Ballast as an offline tool, with paid versions unlocked by a key. When I started shipping paid features, I saw that an account was the easiest and most secure path, so I dropped the offline promise for paid versions. Paid versions for other coding agents will need you to sign in. They aren't on sale yet.
 
-## Other coding agents
+I don't collect your work. Your code and your conversations never reach me, and Ballast has no analytics. An account holds only what selling needs: your email address and your purchases, including which devices use them. Razorpay takes your card details, so I never see them. Visiting the website is covered by its [privacy page](https://implantintelligence.com/privacy).
 
-There's a paid version of Ballast for Codex, Gemini CLI and OpenCode. It cuts long command output and asks for shorter answers, just like it does here. For Cursor, Aider and other agents it comes as a set of rules plus a small command that does the cutting.
-
-It costs $9, or ₹799 if you pay in rupees, once. Your key and download appear straight after payment, and the key works offline. Get it from [Implant Intelligence](https://implantintelligence.com/p/ballast).
-
-Ballast for Claude Code is free to use. See [LICENSE](LICENSE).
+See [LICENSE](LICENSE) for the terms.

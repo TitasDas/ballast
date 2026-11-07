@@ -2,32 +2,36 @@
 
 # Ballast
 
-**Stop paying for the same test log on every reply.**
+**Stop paying for the same tokens or words on every reply.**
 
-Ballast is a free plugin for Claude Code. Replayed over 14 days of my real sessions, it removes 129 million tokens, worth about $36 at Opus 5.5 API prices.
+Ballast is a plugin for Claude Code. It trims long outputs from tools in a conversation, before Claude reads it, so the same log is not sent back with every message. Over 14 days of my own sessions it removed **129 million tokens**. That is about 6% of the bill, or $36 at Opus 5.5 API prices.
 
 ```
 /plugin marketplace add TitasDas/ballast
 /plugin install ballast@ballast
 ```
 
+Needs Claude Code 2.1.310 or newer. The plugin hooks it uses are in early access.
+
 ![Ballast demo](docs/demo.gif)
 
-## Why
+## Why use Ballast?
 
-Claude rereads the whole conversation before every reply. A file you opened once keeps costing you until the conversation is cleared. In my sessions a large result typically gets re-sent 45 times. The worst was 277.
+Claude rereads the whole conversation before every reply, and you pay for those tokens every time. Since I dislike wastage in all forms, I made this to make that loop of my workflow a little more efficient. A cleverer version would keep a running estimate of what Claude still needs from each result, the way a Bayesian filter updates a belief, and trim against that. Ballast does not do that yet.
+
+The thing I saw most in my own sessions was a test log, read once, being sent again with every message until I cleared the conversation. A large result was re-sent **45 times** on average. The worst case was **277 times**.
 
 ![One 27,039-token file re-sent 277 times costs 7.49M tokens without Ballast and 0.62M with it](docs/why.png)
 
 ## How
 
-Ballast cuts long results before Claude reads them. Failures stay in, with their file and line. The rest goes to a file in `.trimmed/` that Claude can read back if it needs to. The fuller the conversation gets, the tighter the cut, and Claude's replies get shorter too.
+When a tool prints a long result, Ballast keeps the failures, with their file and line, and drops the rest. The full output is saved to a file inside the plugin folder, and Claude can read it back if it needs the detail. As the conversation fills up, the trimming gets tighter and Claude's replies get shorter.
 
-A test run that printed 400 lines. Claude got the failure, and the bar shows what the cut has saved:
+Here a test run printed 400 lines. Claude saw the one failure, and the bar shows what the trim has saved so far:
 
 ![The bar after a long test run](docs/band.png)
 
-The next question. The saving doubles without you doing anything:
+On the next question the saving doubles, because the trimmed result is what gets re-sent:
 
 ![A follow-up answered from the cut output](docs/answer.png)
 
@@ -35,13 +39,13 @@ The next question. The saving doubles without you doing anything:
 
 ![202.9M tokens without Ballast, 73.5M with it](docs/saves.png)
 
-| If you paid API prices for | 14 days | 30 days at this pace |
+| At API prices for | 14 days | 30 days at this pace |
 |---|---|---|
 | Sonnet 5.5 | $18 | $38 |
 | Opus 5.5 | $36 | $76 |
 | Fable 5.1 | $57 | $121 |
 
-These are my own 7,563 Claude requests, replayed through Ballast's cut and priced as if every one used that model. Re-sent tokens are billed at the cheap cached rate, so the dollars look small next to the token count: about 6% of the bill. The figures leave out shorter replies, and they leave out any saved file Claude reads back.
+These are my own 7,563 requests over 14 days, replayed through Ballast and priced as if every one used that model. Re-sent tokens are billed at the cached rate, which is much cheaper, so the dollars look small next to the token count. The figures leave out shorter replies, and they leave out any saved file Claude reads back.
 
 The bar shows your own numbers as you work.
 
@@ -49,24 +53,20 @@ The bar shows your own numbers as you work.
 
 | Button | What it does |
 |---|---|
-| Trim outputs | Turns the cut on or off. |
-| Short answers | Turns shorter replies on or off. |
-| Full last | Shows the full version of the last cut output. |
-| Weigh | Tells you whether the conversation needs a tidy up. |
+| Trim outputs | Turns trimming on or off. Same as `/trim on` and `/trim off`. |
+| Short answers | Turns shorter replies on or off. Same as `/lean on` and `/lean off`. |
+| Full last | Shows the full version of the last trimmed output. |
+| Weigh | Tells you whether the conversation needs a tidy up. Same as `/ballast:weigh`. |
 | Compact | Shrinks the conversation and keeps what matters. |
 | Clear | Starts fresh. |
 | Hide | Folds the bar away. |
 
-`/trim off` and `/lean off` do the same as the first two buttons.
+To remove it, run `/plugin uninstall ballast@ballast`.
 
-## Your data, and why paid versions need an account
+## Privacy
 
-![I planned an offline tool, paid features made an account the safer path, and your work stays on your computer](docs/accounts.gif)
+The plugin needs no account and makes no network calls. Your code and your conversations stay on your computer. There are no analytics.
 
-The Claude Code plugin is free and needs no account. It makes no network calls of its own.
-
-I first planned Ballast as an offline tool, with paid versions unlocked by a key. When I started shipping paid features, I saw that an account was the easiest and most secure path, so I dropped the offline promise for paid versions. Paid versions for other coding agents will need you to sign in. They aren't on sale yet.
-
-I don't collect your work. Your code and your conversations never reach me, and Ballast has no analytics. An account holds only what selling needs: your email address and your purchases, including which devices use them. Razorpay takes your card details, so I never see them. Visiting the website is covered by its [privacy page](https://implantintelligence.com/privacy).
+Paid versions for other coding agents are coming, and those will need you to sign in. An account is the simplest way to handle payments across several tools without building a licence key system for each one. It holds your email address and your purchases. Razorpay takes card details, so I never see them. The website has its own [privacy page](https://implantintelligence.com/privacy).
 
 See [LICENSE](LICENSE) for the terms.
